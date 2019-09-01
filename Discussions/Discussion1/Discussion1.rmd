@@ -1,0 +1,91 @@
+---
+title: "Matrix Multiplication"
+author: "Mary Anna Kivenson"
+date: "September 1, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: simplex
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Main Example
+Compute the product of the matrices below (Question C21, Page 190).
+
+#### Question C21, Page 190
+
+**Matrix A:**
+```{r matrix_A, echo=FALSE}
+A <- rbind(c(1,3,2),c(-1,2,1),c(0,1,0))
+print(A)
+```
+
+**Matrix B:**
+```{r matrix_B, echo=FALSE}
+B <- rbind(c(4,1,2),c(1,0,1),c(3,1,5))
+print(B)
+```
+
+**Product**
+
+I created a custom function to generate the matrix product of any two matrices. This function iterates between rows of matrix A and columns of matrix B to find the dot product.
+
+```{r product}
+matrix_mult <- function(matrix_A, matrix_B){
+  C = matrix(nrow = nrow(matrix_A), ncol = ncol(matrix_B))
+  for (b in 1:ncol(matrix_B)){
+    for (a in 1:nrow(matrix_A)){
+      C[a,b] = sum(matrix_A[a,]*matrix_B[,b])
+    }
+  }
+  return(C)
+}
+
+print(matrix_mult(A,B))
+```
+
+## Other Examples
+
+I also applied this function to non-square matrices to see if it still works.
+
+
+#### Question C20, Page 190
+Compute the product of the matrices below.
+
+```{r product2}
+#matrix A
+A <- rbind(c(2,5),c(-1,3),c(2,-2))
+print(A)
+
+#matrix B
+B <- rbind(c(1,5,-3,4),c(2,0,2,-3))
+print(B)
+
+#matrix product
+print(matrix_mult(A,B))
+```
+
+
+
+#### Question C23, Page 190
+Compute the product of the matrices below.
+
+```{r product3}
+#matrix A
+A <- rbind(c(3,1),c(2,4),c(6,5), c(1,2))
+print(A)
+
+#matrix B
+B <- rbind(c(-3,1),c(4,2))
+print(B)
+
+#matrix product
+print(matrix_mult(A,B))
+```
