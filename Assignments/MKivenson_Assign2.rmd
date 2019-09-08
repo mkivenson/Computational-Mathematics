@@ -1,0 +1,165 @@
+---
+title: "Computational Mathematics - Assignment 2"
+author: "Mary Anna Kivenson"
+date: "September 7, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: simplex
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Problem Set 1
+
+
+#### Part 1
+
+Show that: 
+$$A^TA \neq AA^T $$
+
+**Proof:** 
+
+One of the basic laws of matrices is:
+
+$$AB \neq BA $$
+
+
+This law shows that matrix multiplication is not commutative, therefore $$A^TA \neq AA^T $$
+
+**Demonstation:**
+
+Generate a random matrix A:
+
+```{r q1-1a}
+matrix_A = matrix(sample(1:20, 9, replace = TRUE), nrow = 3, ncol = 3)
+print(matrix_A)
+print(t(matrix_A))
+```
+
+
+$$A^TA:$$
+
+```{r q1-1b}
+print(t(matrix_A) %*% matrix_A)
+```
+
+
+$$AA^T: $$
+
+```{r q1-1c}
+print(matrix_A %*% t(matrix_A))
+```
+
+
+The example above shows that generally, the products of matrix multiplication are not equal when multiplication order is inversed.
+
+
+
+#### Part 2
+For a special type of square matrix A, we get: 
+$$A^TA = AA^T $$ 
+Under what conditions could this be true? (Hint: The Identity matrix I is an example of such a matrix).
+
+
+
+This is true when the transpose of A is equal to A.
+
+**Demonstration:**
+
+```{r q1-2a}
+matrix_B = matrix(c(1,0,1,0,1,0,1,0,1), nrow = 3, ncol = 3)
+matrix_B
+```
+
+
+```{r q1-2b}
+matrix_B %*% t(matrix_B) == t(matrix_B) %*% matrix_B
+```
+
+
+
+### Problem Set 2
+
+Matrix factorization is a very important problem. There are supercomputers built just
+to do matrix factorizations. Every second you are on an airplane, matrices are being
+factorized. Radars that track flights use a technique called Kalman filtering. At the heart
+of Kalman Filtering is a Matrix Factorization operation. Kalman Filters are solving linear
+systems of equations when they track your flight using radars.
+Write an R function to factorize a square matrix A into LU or LDU, whichever you
+prefer.
+
+To solve this question, I used an algorithm from [this site](https://www.geeksforgeeks.org/doolittle-algorithm-lu-decomposition/?fbclid=IwAR3tICsTPRsSi579Ct_q2ZeV-YiebwC3dJ7mFUBx-ml11AX2qzi0Y-Nu2lg).
+
+
+```{r 2a}
+lu <- function(matrix){
+
+  n = nrow(A)
+  
+  lower = matrix((c(1:n)*0), nrow=n, ncol=n)
+  upper = matrix((c(1:n)*0), nrow=n, ncol=n)
+  
+  for(i in (1:n)) {
+    for(k in (i:n)) {
+      sum = 0
+      for(j in (1:i)) {
+        sum = sum + (lower[i,j] * upper[j, k])
+      }
+      upper[i, k] = A[i, k] - sum
+    }
+    for(k in (i:n)) {
+      if(i == k) {
+        lower[i, i] = 1
+      } else {
+        sum = 0
+        for(j in (1:i)) {
+          sum = sum + (lower[k, j] * upper[j, i])
+        }
+        lower[k, i] = (A[k, i] - sum) / upper[i, i]
+      }
+    }
+  }
+  
+  return(list(lower, upper))
+  }
+```
+
+Generate a random 3x3 matrix:
+
+```{r 2b}
+A <- matrix(sample(1:20, 9, replace = TRUE), nrow = 3, ncol = 3)
+print(A)
+```
+
+The function returns the following lower form matrix:
+
+```{r 2c}
+#lower:
+lu(A)[[1]]
+```
+
+The function returns the following upper form matrix:
+
+```{r 2d}
+#upper:
+lu(A)[[2]]
+```
+
+Test that the product of the lower and upper form matrices is equal to the original matrix:
+
+```{r 2e}
+#test: 
+lu(A)[[1]] %*% lu(A)[[2]] == A
+```
+
+
+
+
