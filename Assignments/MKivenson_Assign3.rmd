@@ -1,0 +1,224 @@
+---
+title: "Computational Mathematics - Assignment 3"
+author: "Mary Anna Kivenson"
+date: "September 15, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: simplex
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Problem Set 1
+
+
+#### Part 1
+
+What is the rank of matrix A?
+
+The rank of matrix A is 4, because when we simplify the matrix into identity form, no rows are linearly dependent. 
+
+```{r}
+A = t(matrix(c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), ncol = 4))
+print(A)
+print(paste0("Rank of A: ", qr(A)$rank))
+```
+
+```{r}
+A[2,] = A[2,] + A[1,]
+A
+```
+
+```{r}
+A[4,] = A[4,] - 5*A[1,]
+A
+```
+
+```{r}
+A[4,] = A[4,] + 3*A[2,]
+A
+```
+
+```{r}
+A[3,] = A[3,] - .5*A[2,]
+A
+```
+
+
+```{r}
+A[2,] = A[2,] + .8*A[4,]
+A
+```
+
+```{r}
+A[3,] = A[3,] - 1.25*A[4,]
+A
+```
+
+```{r}
+A[1,] = A[1,] - A[2,]
+A
+```
+
+```{r}
+A[2,] = A[2,]/2
+A[3,] = A[3,]/2.25
+A[4,] = A[4,]/-2
+A
+```
+
+```{r}
+A[1,] = A[1,] - 3*A[3,]
+A[4,] = A[4,] - 2.5*A[3,]
+A
+```
+
+
+```{r}
+A[1,] = A[1,] - A[1,4]*A[4,]
+A[2,] = A[2,] - 2.7*A[4,]
+A
+```
+
+#### Part 2
+
+Given an mxn matrix where m > n, what can be the maximum rank? The minimum rank, assuming that the matrix is non-zero?
+
+The maximum rank can be n, because that is the maximum amount of potential linearly independent rows in th matrix. The minimum rank is 1, in the situation where all rows of a matrix are linearly dependent.
+
+#### Part 3
+
+What is the rank of matrix B?
+
+The rank of matrix B is 1 because all rows of this matrix are linearly dependent.
+
+```{r}
+A = t(matrix(c(1,2,1,3,6,3,2,4,2), ncol = 3))
+print(A)
+print(paste0("Rank of A: ", qr(A)$rank))
+```
+
+This can be proven using the method of reducing the matrix. There is only one non-zero row remaining:
+
+```{r}
+A[2,] = A[2,] - 3*A[1,] 
+A[3,] = A[3,] - 2*A[1,] 
+A
+```
+
+## Problem Set 2
+
+Compute the eigenvalues and eigenvectors of the matrix A. You’ll need to show your work. You’ll need to write out the characteristic polynomial and show your solution.
+
+```{r warning=FALSE}
+library(pracma)
+A = t(matrix(c(1,2,3,0,4,5,0,0,6  ), ncol = 3))
+print(A)
+```
+
+#### Eigenvalues
+
+Find the eigenvalues of the matrix A.
+
+```{r, results = 'asis'}
+A2 = t(matrix(c('x - 1',2,3,0, 'x - 4',5,0,0, 'x - 6'), ncol = 3))
+write_matex <- function(x) {
+  begin <- "$$\\begin{bmatrix}"
+  end <- "\\end{bmatrix}$$"
+  X <-
+    apply(x, 1, function(x) {
+      paste(
+        paste(x, collapse = "&"),
+        "\\\\"
+      )
+    })
+  writeLines(c(begin, X, end))
+}
+write_matex(A2)
+```
+
+
+The eigenvalues of this matrix are 1, 4, and 6 because since the matrix A is in upper triangular form, those are the values that make the following true:
+$$det(\lambda I_n - A) = 0$$.
+
+
+#### Characteristic Polynomial
+
+The characteristic polynomial is the expansion of the following equantion, evaulated below.
+
+$$det(\lambda I_n - A) = 0$$
+
+$$(\lambda - 1)(\lambda - 4)(\lambda - 6) = 0$$
+
+$$(\lambda^2 - 5\lambda + 4)(\lambda - 6) = 0$$
+$$\lambda^3 - 11\lambda^2 + 34\lambda - 24 = 0$$
+
+
+
+#### Eigenvectors
+
+Find the eigenvectors of the matrix A. This is done by solving the resulting matrices for each eigenvalue so that they are equal to the zero vector. I found general solutions for each of the following. 
+
+
+
+#### When lambda = 1
+```{r}
+lambda1 <- t(matrix(c(1,0,0,0,1,0,0,0,1), ncol = 3))
+
+# when lambda = 1
+print(cbind(lambda1 - A))
+```
+
+Solution: $$
+\begin{bmatrix} 
+x \\ 
+0 \\ 
+0 \\ 
+\end{bmatrix}$$
+
+
+
+
+#### When lambda = 4
+```{r}
+lambda2 <- t(matrix(c(4,0,0,0,4,0,0,0,4), ncol = 3))
+
+# when lambda = 4
+print(cbind(lambda2 - A))
+```
+
+Solution: $$
+\begin{bmatrix} 
+\frac{2x}{3} \\ 
+x \\ 
+0 \\ 
+\end{bmatrix}$$
+
+
+
+
+#### When lambda = 6
+```{r}
+lambda3 <- t(matrix(c(6,0,0,0,6,0,0,0,6), ncol = 3))
+
+# when lambda = 6
+print(cbind(lambda3 - A))
+```
+
+Solution: $$
+\begin{bmatrix} 
+\frac{8x}{5} \\ 
+\frac{5x}{2} \\ 
+x \\ 
+\end{bmatrix}$$
+
+
+
