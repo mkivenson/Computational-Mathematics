@@ -1,0 +1,84 @@
+---
+title: "Probability"
+author: "Mary Anna Kivenson"
+date: "September 25, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: simplex
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example
+Chapter 1.2: Discrete Probability Distribution
+
+Question 6, Page 35
+
+A die is loaded in such a way that the probability of each face turning up is proportional to the number of dots on that face. (For example, a six is three times as probable as a two.) What is the probability of getting an even number in one throw?
+
+ 
+
+#### Step 1: 
+
+Create a list called `die_items` to represent all the possible outcomes of rolling the die.
+
+#### Step 2: 
+
+Create an empty list called `die_probabilities` that correspond to the probabilities of each outcome.
+
+#### Step 3: 
+
+Write a function to calculate `die_probabilities` for each component `die_items`.
+
+If each probability is proportional to the die value, the numerator of each probability will be the die value. The denominator of each probability will be the sum of all possible die values (1 + 2 + 3 + 4 + 5 + 6 = 21)
+
+#### Step 4: 
+
+Ensure that all probabilities add up to 1.
+
+#### Step 5: 
+
+Sum the probabilities for all even die values.
+
+```{r}
+die_items <- list(1:6)
+die_probabilities  <- list()
+
+for (i in die_items){
+    print(paste0("Die Result: ", i))
+    probability <- (i * (1/21))
+    print(paste0("Probability: ", probability, " or ", i, "/21"))
+    die_probabilities = append(probability, die_probabilities)}
+
+print(paste0("Sum of all probabilities: ", Reduce("+", die_probabilities)))
+```
+ 
+
+$$P(Die = 1): \frac{1}{21}$$
+
+$$P(Die = 2): \frac{2}{21}$$
+
+$$P(Die = 3): \frac{3}{21}$$
+
+$$P(Die = 4): \frac{4}{21}$$
+
+$$P(Die = 5): \frac{5}{21}$$
+
+$$P(Die = 6): \frac{6}{21}$$
+
+ 
+
+$$P(even) = P(Die = 2) + P(Die = 4) + P(Die = 6)$$
+
+$$P(Die is even) = \frac{2}{21} + \frac{4}{21} + \frac{6}{21}$$
+
+$$P(Die is even) = \frac{12}{21} = \frac{4}{7}$$
+
+ 
