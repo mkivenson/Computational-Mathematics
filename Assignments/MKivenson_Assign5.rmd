@@ -45,7 +45,7 @@ $$[\frac{1}{8}c + \frac{1}{4}c^2]^{\frac{1}{2}}_{0}$$
 
 $$(\frac{1}{16} + \frac{1}{16})$$
 
-
+$$P(B + C < \frac{1}{2}) = \frac{1}{8}$$
 
 ### Experimental Solution
 
