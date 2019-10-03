@@ -1,0 +1,40 @@
+---
+title: "Probability"
+author: "Mary Anna Kivenson"
+date: "October 2, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: simplex 
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Chapter 4.1: Discrete Conditional Probability
+
+Question 5, Page 150
+
+A coin is tossed three times. Consider the following events 
+
+- A: Heads on the ﬁrst toss. 
+- B: Tails on the second.
+- C: Heads on the third toss. 
+- D: All three outcomes the same (HHH or TTT). 
+- E: Exactly one head turns up.
+ 
+
+#### Which of the following pairs of these events are independent?
+
+1. A, B - Independent (Each toss is independent)
+2. A, D - Dependent (If the second toss is tails, then all three outcomes must be tails for D to occur)
+3. A, E - Dependent (If heads happens on the first toss, then it can't occur again for E to happen)
+4. D, E - Dependent (mutually exclusive)
+
+#### Which of the following triples of these events are independent?
+
+1. A, B, C - Independent (Each toss is independent)
+2. A, B, D - Dependent (mutually exclusive)
+3. C, D, E - Dependent (mutually exclusive)
