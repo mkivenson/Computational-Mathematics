@@ -43,7 +43,10 @@ $$ F(Y = 3) = \frac{(k-2)^n - (k-3)^n}{k^n} $$
 General solution:
 
 $$ F(Y = min) = \frac{(k-min+1)^n - (k-min)^n}{k^n} $$
+
 ### Simulation
+
+Simulated distributions are plotted below.
 
 #### 20 mutually independent random variables, values between 1 and 100
 ```{r}
@@ -120,6 +123,7 @@ This machine has a manufacturer’s expected lifetime of 10 years. This means
 that we expect one failure every ten years. (Include the probability statements
 and R Code for each part.).
 
+### Part A {.tabset .tabset-fade}
 a. What is the probability that the machine will fail after 8 years?. Provide also the
 expected value and standard deviation. Model as a geometric. (Hint: the probability is
 equivalent to not failing during the first 8 years..)
@@ -145,6 +149,7 @@ $$E(x) = \frac{1}{p} = \frac{1}{0.1} = 10 years$$
 $$Stdev = \sqrt{\frac{1-p}{p^2}} = \sqrt{\frac{1-0.1}{0.1^2}} = 9.487$$
 
 
+### Part B {.tabset .tabset-fade}
 
 b. What is the probability that the machine will fail after 8 years?. Provide also the
 expected value and standard deviation. Model as an exponential.
@@ -163,6 +168,7 @@ $$E(x) = \frac{1}{\lambda} = \frac{1}{0.1} = 10 years$$
 $$Stdev = \frac{1}{\lambda} = \frac{1}{0.1} = 10$$
 
 
+### Part C {.tabset .tabset-fade}
 
 c. What is the probability that the machine will fail after 8 years?. Provide also the
 expected value and standard deviation. Model as a binomial. (Hint: 0 success in 8
@@ -182,6 +188,8 @@ $$E(x) = np = 8 * 0.1 = 0.8$$
 #### Standard Deviation
 $$Stdev = \sqrt{np(1-p)} = \sqrt{0.8(0.9)} = 0.84852813742$$
 
+### Part D {.tabset .tabset-fade}
+
 d. What is the probability that the machine will fail after 8 years?. Provide also the
 expected value and standard deviation. Model as a Poisson. 
 
@@ -199,3 +207,4 @@ $$E(x) = \lambda = 0.8$$
 
 #### Standard Deviation
 $$Stdev = \sqrt{\lambda} = \sqrt{0.8} = 0.894427191$$
+
