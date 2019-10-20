@@ -1,0 +1,29 @@
+---
+title: "Discussion 8 Response"
+author: "Mary Anna Kivenson"
+date: "October 20, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 3
+The following function prints the results of 10 batches of 1,000 rolls each (cumulative results)
+
+```{r}
+toss10k <- function(){
+  batch = list()
+  for (i in 1:30){
+    n <- i * 1000
+    trial <- rbinom(n=1000, size = 1, prob = 0.5)
+    batch[[i]] <- sum(trial)
+    diff <- Reduce("+", batch) - (n/2)
+    cat("In batch",i,"we have Sn = ",Reduce("+", batch), "and Sn - n/2 =", diff, "and heads rate of", round(Reduce("+", batch)/n,3), ".\n")
+  }
+}
+
+toss10k()
+```
+

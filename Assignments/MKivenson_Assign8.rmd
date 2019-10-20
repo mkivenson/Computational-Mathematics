@@ -1,0 +1,123 @@
+---
+title: "Computational Mathematics - Assignment 8"
+author: "Mary Anna Kivenson"
+date: "October 20, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Probability
+
+## Page 303 Q 11
+
+A company buys 100 lightbulbs, each of which has an exponential lifetime of
+1000 hours. What is the expected time for the first of these bulbs to burn
+out? (See Exercise 10.)
+
+$$ \frac{\mu}{n} = \frac{1000}{100} = 10 hrs $$
+
+## Page 303 Q 14
+
+Assume that X1 and X2 are independent random variables, each having an
+exponential density with parameter λ. Show that Z = X1 − X2 has density
+$$f_Z(z) = (1/2)\lambda e^{−\lambda|z|}$$
+
+### Sum of Two Independent Exponential Random Variables
+
+If x greater than or equal to 0: 
+
+$$f_X(x) = f_Y(x) = \lambda e^{\lambda x}$$
+If z > 0:
+
+$$f_Z(z) = \int^\infty_{-\infty} f_X(z+y)f_Y(y)dy $$
+$$f_Z(z) = \int^z_0 \lambda e ^{-\lambda (z + y)}\lambda e^ {-\lambda y}dy $$
+
+$$f_Z(z) = \int^z_0 \lambda ^2 e ^{-\lambda (z+2y)}dy $$
+
+$$ \frac{\lambda}{2} z e^{-\lambda |z|} $$
+
+
+
+## Page 320 Q 1 {.tabset}
+
+Let X be a continuous random variable with mean µ = 10 and variance σ^2 = 100/3. 
+Using Chebyshev’s Inequality, find an upper bound for the following probabilities.
+
+### Chebyshev Inequality
+
+Let X be a discrete random variable with expected value μ = E(X), and let $$\sigma > 0 $$ be any positive real number. Then
+$$P(|X-\mu| \geq \sigma) \leq \frac{V(X)}{\sigma^2}$$
+
+```{r}
+cheby <- function(mean, variance, difference){
+  upper_bound = variance / difference^2
+  if (variance > difference^2){
+    return(cat("The upper bound of P(|X -", mean,"| >=",difference,") is", upper_bound, "- insignificant result"))
+  }
+  else{
+    return(cat("The upper bound of P(|X -", mean,"| >=",difference,") is", upper_bound))
+  }
+  
+}
+```
+
+
+### Part A
+
+(a) P(|X − 10| ≥ 2).
+
+```{r}
+mean = 10
+var = 100/3
+diff = 2
+cheby(mean, var, diff)
+```
+
+
+### Part B
+
+(b) P(|X − 10| ≥ 5).
+
+```{r}
+var = 100/3
+diff = 5
+cheby(mean, var, diff)
+```
+
+
+### Part C
+
+(c) P(|X − 10| ≥ 9).
+
+```{r}
+var = 100/3
+diff = 9
+cheby(mean, var, diff)
+```
+
+
+### Part D
+
+(d) P(|X − 10| ≥ 20).
+
+```{r}
+var = 100/3
+diff = 20
+cheby(mean, var, diff)
+```
+
+
