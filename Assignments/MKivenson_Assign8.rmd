@@ -38,6 +38,9 @@ $$f_Z(z) = (1/2)\lambda e^{−\lambda|z|}$$
 
 ### Sum of Two Independent Exponential Random Variables
 
+![](https://raw.githubusercontent.com/mkivenson/Computational-Mathematics/master/Assignments/density.PNG)
+
+
 If x greater than or equal to 0: 
 
 $$f_X(x) = f_Y(x) = \lambda e^{\lambda x}$$
