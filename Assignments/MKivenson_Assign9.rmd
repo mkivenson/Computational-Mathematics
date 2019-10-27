@@ -1,0 +1,127 @@
+---
+title: "Computational Mathematics - Assignment 9"
+author: "Mary Anna Kivenson"
+date: "October 26, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Probability
+
+## Question 1 {.tabset}
+Question 11 Page 363
+
+The price of one share of stock in the Pilsdorff Beer Company (see Exercise 8.2.12) is given by Yn on the nth day of the year. Finn observes that
+the differences Xn = Yn+1 − Yn appear to be independent random variables with a common distribution having mean µ = 0 and variance σ
+2 = 1/4. 
+
+
+### Central Limit Theorem
+
+Let $$ S_n = X_1 + X_2 + ... + X_n $$ be the sum of n independent continuous random variables with common density function p
+having expected value µ and variance σ^2. Let
+
+$$S_n^* = (S_n - n\mu)/\sqrt{n}\sigma$$
+
+for all a < b:
+$$\lim_{n\to\infty} P(a < S^*_n < b) = \frac{1}{\sqrt{2\pi}} \int^b_a e^{\frac{-x^2}{2}}dx$$
+
+
+If Y1 = 100, estimate the probability that Y365 is
+
+
+### (a) ≥ 100.
+
+$$S_n^* = (S_n - S_n1 - n\mu)/\sqrt{n}\sigma$$
+
+$$S_n^* = (100 - 100 - (365-1)*0)/\frac{\sqrt{365-1}}{2}$$
+
+$$S_n^* = 0$$
+
+```{r}
+pnorm(0)
+```
+
+
+
+
+### (b) ≥ 110.
+
+$$S_n^* = (S_n - S_n1 - n\mu)/\sqrt{n}\sigma$$
+
+$$S_n^* = (100 - 110 - (365-1)*0)/\frac{\sqrt{365-1}}{2}$$
+
+$$S_n^* = -1.048$$
+
+```{r}
+pnorm(-1.048)
+```
+
+### (c) ≥ 120.
+
+$$S_n^* = (S_n - S_n1 - n\mu)/\sqrt{n}\sigma$$
+
+$$S_n^* = (100 - 120 - (365-1)*0)/\frac{\sqrt{365-1}}{2}$$
+
+$$S_n^* = -2.0966$$
+
+```{r}
+pnorm(-2.0966)
+```
+
+## Question 2
+Calculate the expected value and variance of the binomial distribution using the moment
+generating function.
+
+
+Binomial distribution moment generating function:
+
+$$M_X(t)= \frac{\lambda}{\lambda - t}$$
+
+E[X] (first derivative of moment generating function):
+
+$$\frac{dM_X(t)}{dt} = \frac{\lambda}{(\lambda-t)^2}$$
+
+E[X^2] (first derivative of moment generating function):
+
+$$\frac{d^2M_X(t)}{dt^2} = \frac{2}{\lambda^2}$$
+Variance = E[X^2] - E[X]^2
+
+$$Var = \frac{2}{\lambda^2} - \frac{\lambda^2}{(\lambda-t)^4}$$
+
+
+
+## Question 3
+Calculate the expected value and variance of the exponential distribution using the moment
+generating function.
+
+Exponential distribution moment generating function:
+
+$$M_X(t)= (pe^t + q)^n$$
+
+E[X] (first derivative of moment generating function):
+
+$$\frac{dM_X(t)}{dt} = np$$
+
+E[X^2] (first derivative of moment generating function):
+
+$$\frac{d^2M_X(t)}{dt^2} = n(n-1)p^2 + np$$
+
+Variance = E[X^2] - E[X]^2
+
+$$Var = n(n-1)p^2 + np - n^2p^2 = p^2(n^2-n-n^2) + np = -np^2 + np$$
+
