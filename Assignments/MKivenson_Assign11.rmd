@@ -1,0 +1,45 @@
+---
+title: "Computational Mathematics - Assignment 11"
+author: "Mary Anna Kivenson"
+date: "November 9, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Regression - HW 11
+
+## Question 1 {.tabset}
+
+Using the “cars” dataset in R, build a linear model for stopping distance as a function of speed and replicate the analysis of your textbook chapter 3 (visualization, quality evaluation of the model, and residual analysis.)
+
+```{r}
+data(mtcars)
+head(mtcars, 6)
+```
+
+### Visualization
+
+```{r}
+data(mtcars)
+head(mtcars, 6)
+```
+
+### Linear Model Function
+
+### Evaluating Model Quality
+
+### Residual Analysis
