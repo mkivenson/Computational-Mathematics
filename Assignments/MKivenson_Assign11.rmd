@@ -7,9 +7,9 @@ output:
     
     theme: cosmo 
     highlight: zenburn
-    toc: true
-    toc_float: true
-    toc_depth: 4
+#    toc: true
+#    toc_float: true
+#    toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
@@ -22,24 +22,66 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Regression - HW 11
 
-## Question 1 {.tabset}
+## Cars - With Outliers {.tabset}
 
 Using the “cars” dataset in R, build a linear model for stopping distance as a function of speed and replicate the analysis of your textbook chapter 3 (visualization, quality evaluation of the model, and residual analysis.)
 
 ```{r}
-data(mtcars)
-head(mtcars, 6)
+data(cars)
+head(cars, 6)
 ```
+
 
 ### Visualization
 
+A scatter plot of stopping distance as a function of speed.
+
 ```{r}
-data(mtcars)
-head(mtcars, 6)
+ggplot(cars, aes(speed,dist)) + geom_point() + 
+  ggtitle("Speed vs Stopping Distance") 
 ```
 
-### Linear Model Function
+### Linear Model
 
-### Evaluating Model Quality
+```{r}
+attach(cars)
+lm <- lm(dist ~ speed)
+lm
+```
+
+```{r}
+eq = paste0("y = ", round(lm[1]$coefficients[2],3), "*x + ", round(lm[1]$coefficients[1],3))
+ggplot(cars, aes(speed,dist)) + geom_point() + 
+  geom_abline(intercept = lm[1]$coefficients[1], slope = lm[1]$coefficients[2]) +
+  ggtitle(paste("Speed vs Stopping Distance:",eq)) 
+```
+
+
+### Model Quality
+
+* This model has an `intercent` of 17.5791 and a `slope` of 3.9324, so for every additional unit of speed, the stopping distance increases by 3.9324. 
+* The model has 48 degree of freedom, which is the number of samples minus the number of coefficents in the model (50 - 2).
+* To determine the model quality, we look at the `Multiple R-squared` value. R-squared values closer to one indicate better model quality, so R^2 = 0.6511 indicates that this model is sufficient.
+
+```{r}
+summary(lm)
+```
 
 ### Residual Analysis
+
+The residuals do not have a trend, which indicates that a linear model fits the data well. However, there are more residual values below 0 than above 0, which suggests that the data may have outliers.
+
+```{r}
+cars$resid <- resid(lm)
+ggplot(cars, aes(speed,resid)) + geom_point() + 
+  geom_hline(yintercept=0, linetype="dashed", color = "blue") +
+  ggtitle("Residual Plot") 
+```
+
+
+### Outliers
+
+```{r}
+dist_outlier <- boxplot.stats(cars$dist)$out
+print(paste("There is a stopping distance outlier at",dist_outlier))
+```
