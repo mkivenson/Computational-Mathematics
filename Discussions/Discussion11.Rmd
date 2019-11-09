@@ -1,0 +1,98 @@
+---
+title: "Computational Mathematics - Assignment 11"
+author: "Mary Anna Kivenson"
+date: "November 9, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+#    toc: true
+#    toc_float: true
+#    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Regression - Discussion 11
+
+## Swiss Education vs Agriculture Regression {.tabset}
+
+I am using the built-in R dataset of Swiss socioeconomic and fertility factors from 1888. I will focus on the relationship between education and agriculture. 
+
+```{r}
+data(swiss)
+head(swiss, 6)
+```
+
+
+### Visualization
+
+A scatter plot of agriculture as a function of education. We can take the log of education to fit the a linear regression.
+
+```{r}
+ggplot(swiss, aes(Education,Agriculture)) + geom_point() + 
+  ggtitle("Education vs Agriculture") 
+
+ggplot(swiss, aes(log(Education),Agriculture)) + geom_point() + 
+  ggtitle("Log Education vs Agriculture") 
+```
+
+### Linear Model
+
+Fit agriculture ~ log(education).
+
+```{r}
+attach(swiss)
+lm <- lm(Agriculture ~ log(Education))
+lm
+```
+
+```{r}
+eq = paste0("y = ", round(lm[1]$coefficients[2],3), "*x + ", round(lm[1]$coefficients[1],3))
+ggplot(swiss, aes(log(Education),Agriculture)) + geom_point() + 
+  geom_abline(intercept = lm[1]$coefficients[1], slope = lm[1]$coefficients[2]) +
+  ggtitle(paste("Log Education vs Agriculture:",eq)) 
+```
+
+### Conditions
+
+* The Swiss towns which we used to fit the line are independent.
+
+* The relationship between the log education and agriculture is linear.
+
+* The residuals from the regression line are nearly normal.
+
+* The variability of education/agriculture observations around the regression line is constant.
+
+
+### Model Quality
+
+* This model has an `intercent` of -19.348 and a `slope` of 91.277.
+
+* To determine the model quality, we look at the `Multiple R-squared` value. R-squared values closer to one indicate better model quality, so R^2 =  0.4569 indicates that this model is not ideal.
+
+```{r}
+summary(lm)
+```
+
+### Residual Analysis
+
+The residuals do not have a trend, which indicates that a linear model fits the data well.
+
+```{r}
+swiss$resid <- resid(lm)
+ggplot(swiss, aes(log(Education),resid)) + geom_point() + 
+  geom_hline(yintercept=0, linetype="dashed", color = "blue") +
+  ggtitle("Residual Plot") 
+
+ggplot(data=swiss, aes(swiss$resid)) + 
+  geom_histogram(binwidth=5) +
+  ggtitle("Residual Histogram") 
+```
