@@ -1,0 +1,141 @@
+---
+title: "Discussion12"
+author: "Mary Anna Kivenson"
+date: "November 16, 2019"
+output:
+  rmarkdown::html_document:
+    theme: cosmo 
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(readxl)
+```
+
+
+# Multiple Linear Regression {.tabset}
+
+## Dataset
+
+The dataset I will be using is from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength), containing concrete strength factor data. 
+
+The dataset has the following factors:
+
+* Cement (component 1) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Blast Furnace Slag (component 2) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Fly Ash (component 3) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Water (component 4) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Superplasticizer (component 5) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Coarse Aggregate (component 6) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Fine Aggregate (component 7) -- quantitative -- kg in a m3 mixture -- Input Variable
+* Age -- quantitative -- Day (1~365) -- Input Variable
+
+And the following dependent variable:
+
+* Concrete compressive strength -- quantitative -- MPa -- Output Variable
+
+We preview the data below.
+
+```{r}
+concrete <- read.csv("https://raw.githubusercontent.com/mkivenson/Computational-Mathematics/master/Discussions/Concrete%20Strength%20Dataset.csv", header = TRUE)
+
+head(concrete)
+```
+
+
+## Exploring the Data
+
+#### Distribution of Cemete Strength
+
+The distribution of cement strength is normal and centered at 35.82. 
+
+```{r}
+ggplot(concrete, aes(Strength)) + 
+  geom_histogram(bins = 25) + 
+  ggtitle("Distribution of Cemete Strength")
+
+summary(concrete$Strength)
+```
+
+
+#### Correlation Plot
+
+The following chart looks at correlation between different factors and cement strength.
+
+```{r}
+library(corrplot)
+corrplot(cor(concrete), 
+         type = "upper", 
+         order = "hclust")
+```
+
+
+## Regression
+
+For multiple linear regression, we use Fly Ash, Superplasticizer, Blast Furnace Slag, Water, Age, and Cement as factors. The p-value for Fine Aggregate and Course Aggregate is > 0.05. 
+
+```{r}
+lm_concrete <- lm(Strength ~ +
+                    #Fine.Aggregate + 
+                    Fly.Ash + 
+                    Superplasticizer + 
+                    Blast.Furnace.Slag + 
+                    Water + 
+                    Age + 
+                    #Course.Aggregate + 
+                    Cement, 
+                  data = concrete)
+summary(lm_concrete)
+```
+
+#### Multiple Regression Line
+
+$$ y = 29 + 0.069*\hat{Fly.Ash } + 0.24*\hat{Superplasticizer} + 0.086*\hat{Blast.Furnace.Slag} 
+-0.218*\hat{Water} + 0.113*\hat{Age} + 0.105*\hat{Cement}$$
+
+
+## Residual Analysis
+
+
+#### QQ Plot
+
+```{r}
+qqnorm(lm_concrete$residuals)
+qqline(lm_concrete$residuals)
+```
+
+
+#### Histogram of Residuals
+
+The histogram of residuals is normally distributed.
+
+```{r}
+hist(lm_concrete$residuals)
+```
+
+#### Residual Plot
+
+The residual plot shows constant variability, but seems to have a linear pattern. 
+
+```{r}
+plot(lm_concrete$residuals ~ concrete$Strength)
+abline(h = 0, lty = 3)
+```
+
+
+
+
+
+
+
+
+
+
+
