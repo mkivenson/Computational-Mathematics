@@ -1,0 +1,256 @@
+---
+title: "Assignment12"
+author: "Mary Anna Kivenson"
+date: "November 17, 2019"
+output:
+  rmarkdown::html_document:
+    theme: cosmo 
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+# Assignment 12 {.tabset}
+
+## Dataset
+
+The attached who.csv dataset contains real-world data from 2008. The variables included follow.
+
+* Country: name of the country
+
+* LifeExp: average life expectancy for the country in years
+
+* InfantSurvival: proportion of those surviving to one year or more
+
+* Under5Survival: proportion of those surviving to five years or more
+
+* TBFree: proportion of the population without TB.
+
+* PropMD: proportion of the population who are MDs
+
+* PropRN: proportion of the population who are RNs
+
+* PersExp: mean personal expenditures on healthcare in US dollars at average exchange rate
+
+* GovtExp: mean government expenditures per capita on healthcare, US dollars at average exchange rate
+
+* TotExp: sum of personal and government expenditures.
+
+```{r}
+who <- read.csv("https://raw.githubusercontent.com/mkivenson/Computational-Mathematics/master/Assignments/Assignment%2012/who.csv")
+
+head(who)
+```
+
+
+## Step 1
+
+Provide a scatterplot of LifeExp~TotExp, and run simple linear regression. Do not transform the
+variables. Provide and interpret the F statistics, R^2, standard error,and p-values only. Discuss
+whether the assumptions of simple linear regression met.
+
+#### Scatterplot
+
+```{r}
+ggplot(who, aes(TotExp, LifeExp)) + geom_point() + 
+  ggtitle("Scatterplot of LifeExp~TotExp") 
+```
+
+
+#### Linear regression
+
+```{r}
+attach(who)
+lm_who <- lm(LifeExp~TotExp)
+summary(lm_who)
+```
+
+
+#### Assumptions
+
+* Linear relationship - Not met, the scatterplot is not linear.
+* Normally distributed Residuals - Not met, the residuals are skewed.
+
+```{r}
+ggplot(lm_who, aes(x=lm_who$residuals)) + 
+  geom_histogram(binwidth=1) +
+  ggtitle("Distribution of Residuals")
+```
+
+* Independence of the observations - population health a country must be independent of population health of other countries (assume true for this exercise?)
+* Homoscedasticity - Variance appears constant
+
+#### Results
+
+* The F-statistic of 65.26 is the overall significance of the regression model. 
+* The R^2 of 0.2577 means that the fit of the model is subpar
+* The Standard Error of 9.371 is the amount which the estimated life expectance varies from the actual value.
+* The p-value of 7.71e-14 indicates the relationship between LifeExp and TotExp is significant
+
+## Step 2
+
+Raise life expectancy to the 4.6 power (i.e., LifeExp^4.6). Raise total expenditures to the 0.06
+power (nearly a log transform, TotExp^.06). Plot LifeExp^4.6 as a function of TotExp^.06, and r
+re-run the simple regression model using the transformed variables. Provide and interpret the F
+statistics, R^2, standard error, and p-values. Which model is "better?"
+
+#### Transformations
+
+```{r}
+who$LifeExp <- who$LifeExp^4.6
+who$TotExp <- who$TotExp^.06
+```
+
+
+#### Linear regression
+
+```{r}
+ggplot(who, aes(TotExp, LifeExp)) + geom_point() + 
+  ggtitle("Scatterplot of LifeExp~TotExp") 
+```
+
+#### Scatterplot
+
+```{r}
+attach(who)
+lm_who <- lm(LifeExp~TotExp)
+summary(lm_who)
+```
+
+
+#### Assumptions
+
+
+* Linear relationship - Met, the adjusted relationship is moderately strong, positive, and linear.
+* Normally distributed Residuals - Met, the residual histogram is normal.
+
+
+```{r}
+ggplot(lm_who, aes(x=lm_who$residuals)) + 
+    geom_histogram(bins = 20) +
+  ggtitle("Distribution of Residuals")
+```
+
+* Independence of the observations - population health a country must be independent of population health of other countries (assume true for this exercise?)
+* Homoscedasticity - Variance in the scatterplot appears constant
+
+
+#### Results
+* The F-statistic of 507.7 is the overall significance of the regression model. 
+* The R^2 of 0.7298 means that the model fits the data well
+* The Standard Error of 90490000 is the amount which the estimated life expectance^4.6 varies from the actual value.
+* The p-value of <2e-16 indicates the relationship between LifeExp and TotExp is significant
+
+## Step 3
+
+Using the results from 3, forecast life expectancy when TotExp^.06 = 1.5. Then forecast life expectancy when TotExp^.06=2.5. 
+
+#### Model
+$$LifeExp^{4.6} = -736527910 + 620060216 * TotExp^.06$$
+
+```{r}
+exp_model <- function(x){
+  y = -736527910 + (620060216 * x)
+  return(y)
+}
+```
+
+
+#### TotExp^.06 = 1.5
+
+```{r}
+exp_model(1.5)
+```
+
+
+#### TotExp^.06 = 2.5
+
+```{r}
+exp_model(2.5)
+```
+
+## Step 4
+
+Build the following multiple regression model and interpret the F Statistics, R^2, standard error, and p-values. How good is the model?
+LifeExp = b0+b1 x PropMd + b2 x TotExp +b3 x PropMD x TotExp
+
+
+#### Multiple regression
+
+```{r}
+attach(who)
+mult_lm_who <- lm(LifeExp ~ + 
+               PropMD + 
+               TotExp +
+               (PropMD * TotExp))
+summary(mult_lm_who)
+```
+
+
+#### Results
+* The F-statistic of 180.3 is the overall significance of the regression model. 
+* The R^2 of 0.7441 means that the model fits the data well
+* The Standard Error of 88520000 is the amount which the estimated life expectance^4.6 varies from the actual value.
+* The p-value of <2e-16 indicates the linear model is significant
+
+## Step 5
+
+Forecast LifeExp when PropMD=.03 and TotExp = 14. Does this forecast seem realistic? Why or why not?
+
+#### Prediction
+
+```{r}
+mult_exp_model <- function(a,b){
+  y = -724400000 + 
+    (47270000000 * a) + 
+    (604800000 * b) + 
+    (-21210000000 * a * b)
+  return(y)
+}
+(mult_exp_model(0.03, 14))^(1/4.6)
+```
+
+This result seems reasonable because we used the adjusted exponential model. I will check results with the original dataset as well.
+
+
+## Step 5 (No Adj)
+
+Here, I re-did the multiple linear regression with the original dataset (without adjusting LifeExp and TotExp).
+
+```{r}
+who <- read.csv("https://raw.githubusercontent.com/mkivenson/Computational-Mathematics/master/Assignments/Assignment%2012/who.csv")
+```
+
+#### Multiple regression
+
+```{r}
+attach(who)
+mult_lm_who <- lm(LifeExp ~ + 
+               PropMD + 
+               TotExp +
+               (PropMD * TotExp))
+summary(mult_lm_who)
+```
+
+
+#### Results
+This model is much less accurate than the adjusted version, with an R^2 of 0.3574.
+
+
+#### Prediction
+
+The prediction of 107.68 years does not seem accurate, suggesting that this model is not accurate. 
+
+```{r}
+mult_exp_model <- function(a,b){
+  y = 62.77 + 
+    (1497 * a) + 
+    (.0000723300 * b) + 
+    (-.006026 * a * b)
+  return(y)
+}
+mult_exp_model(0.03, 14)
+```
