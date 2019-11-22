@@ -1,0 +1,100 @@
+---
+title: "Computational Mathematics - Discussion 13"
+author: "Mary Anna Kivenson"
+date: "November 21, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Calculus
+
+## Question 3 {.tabset}
+
+
+Water flows onto a flat surface at a rate of 5 cm^3/s forming a
+circular puddle 10mm deep. How fast is the radius growing
+when the radius is:
+
+volume of puddle = area of circle x depth
+depth = 10mm = 1cm
+
+$$\frac{dV}{dt} = \pi 2r \frac{dr}{dt} h$$
+$$\frac{dr}{dt} = \frac{\frac{dV}{dt}}{2 \pi rh}$$
+
+### 1 cm
+
+```{r}
+cyl_radius_change <- function(dv, radius, height){
+  dr = dv/(2 * pi * radius * height)
+  return(dr)
+}
+print('The radius change over time (cm/s) when the radius is 1cm is:')
+cyl_radius_change(5, 1, 1)
+```
+
+
+### 10 cm
+
+```{r}
+print('The radius change over time (cm/s) when the radius is 10cm is:')
+cyl_radius_change(5, 10, 1)
+```
+
+
+### 100 cm
+
+```{r}
+print('The radius change over time (cm/s) when the radius is 100cm is:')
+cyl_radius_change(5, 100, 1)
+```
+
+## Question 4 {.tabset}
+
+
+A circular balloon is inflated with air flowing at a rate of
+10 cm^3/s. How fast is the radius of the balloon increasing
+when the radius is:
+
+$$V = \frac{4}{3} \pi r^3$$
+$$\frac{dV}{dt} = 4 \pi r ^2 \frac{dr}{dt}$$
+$$\frac{dr}{dt} = \frac{\frac{dV}{dt}}{4 \pi r^2}$$
+
+### 1 cm
+
+```{r}
+sph_radius_change <- function(dv, radius){
+  dr = dv/(4 * pi * (radius^2))
+  return(dr)
+}
+print('The radius change over time (cm/s) when the radius is 1cm is:')
+sph_radius_change(10, 1)
+```
+
+### 10 cm
+
+```{r}
+print('The radius change over time (cm/s) when the radius is 10cm is:')
+sph_radius_change(10, 10)
+```
+
+
+### 100 cm
+
+```{r}
+print('The radius change over time (cm/s) when the radius is 100cm is:')
+sph_radius_change(10, 100)
+```
