@@ -1,0 +1,79 @@
+---
+title: "Computational Mathematics - Assignment 14"
+author: "Mary Anna Kivenson"
+date: "November 23, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**Calculus Assignment 14**
+
+Taylor Series
+
+$$f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 +...+ \frac{f^n(a)}{n!}(x-a)^n$$
+
+
+## Question 1: $$ f(x) = \frac{1}{1-x}$$
+
+
+#### Derivatives 
+
+$$ f'(x) = \frac{1}{(1-x)^2}$$
+$$ f''(x) = \frac{2}{(1-x)^3}$$
+$$ f'''(x) = \frac{6}{(1-x)^4}$$
+$$ f^n(x) = \frac{n!}{(1-x)^{n+1}}$$
+
+#### Use a = 0
+
+$$ f^n(0) = n!$$
+
+$$f(x) = 1 + x + x^2 +...+ x^{n}$$
+
+
+## Question 2: $$ f(x) = e^x$$
+
+#### Derivatives 
+
+$$ f'(x) = e^x$$
+$$ f''(x) = e^x$$
+
+$$ f'''(x) = e^x$$
+$$ f^n(x) = e^x$$
+
+
+#### Use a = 0
+
+$$ f^n(0) = 1$$
+
+$$ f^n(x) = 1 + x + \frac{x^2}{2!}+...+ \frac{x^n}{n!}$$
+
+## Question 3: $$ f(x) = ln(1+x)$$
+
+#### Derivatives 
+
+$$ f'(x) = \frac{1}{x+1}$$
+$$ f''(x) = \frac{-1}{(x+1)^2}$$
+$$ f'''(x) = \frac{2}{(x+1)^3}$$
+
+$$ f^n(x) = \frac{(-1)^{n+1}(n-1)!}{(x+1)^n}$$
+
+#### Use a = 0
+
+$$ f^n(0) = (-1)^{n+1}(n-1)!$$
+
+
+$$f(x) = x+ \frac{x^2}{2} +...+ \frac{(-1)^{n+1}}{n}x^n$$

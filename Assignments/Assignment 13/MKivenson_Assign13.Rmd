@@ -1,5 +1,5 @@
 ---
-title: "Computational Mathematics - Discussion 13"
+title: "Computational Mathematics - Assignment 13"
 author: "Mary Anna Kivenson"
 date: "November 23, 2019"
 output:
