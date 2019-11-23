@@ -7,9 +7,6 @@ output:
     
     theme: cosmo 
     highlight: zenburn
-    toc: true
-    toc_float: true
-    toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
@@ -20,17 +17,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-**Calculus Assignment 14**
+# Calculus Assignment 14 {.tabset}
 
 Taylor Series
+
+For each function, only consider its valid ranges as indicated in the notes when you are computing the Taylor Series expansion.
+
+The following is the formula for a Taylor Series expansion. 
 
 $$f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 +...+ \frac{f^n(a)}{n!}(x-a)^n$$
 
 
-## Question 1: $$ f(x) = \frac{1}{1-x}$$
+## Question 1
 
+### $$ f(x) = \frac{1}{1-x}$$
 
 #### Derivatives 
+
+We first evaluate the first few derivatives of f(x).
 
 $$ f'(x) = \frac{1}{(1-x)^2}$$
 $$ f''(x) = \frac{2}{(1-x)^3}$$
@@ -39,14 +43,22 @@ $$ f^n(x) = \frac{n!}{(1-x)^{n+1}}$$
 
 #### Use a = 0
 
+Plugging in a = 0 into f(x), we get the following equation for the nth derivative:
+
 $$ f^n(0) = n!$$
+
+Using the standard formula for a taylor series expansion and the nth derivative formula for this function, we get the following series. 
 
 $$f(x) = 1 + x + x^2 +...+ x^{n}$$
 
 
-## Question 2: $$ f(x) = e^x$$
+## Question 2
+
+### $$ f(x) = e^x$$
 
 #### Derivatives 
+
+We first evaluate the first few derivatives of f(x).
 
 $$ f'(x) = e^x$$
 $$ f''(x) = e^x$$
@@ -57,13 +69,21 @@ $$ f^n(x) = e^x$$
 
 #### Use a = 0
 
+Plugging in a = 0 into f(x), we get the following equation for the nth derivative:
+
 $$ f^n(0) = 1$$
+
+Using the standard formula for a taylor series expansion and the nth derivative formula for this function, we get the following series. 
 
 $$ f^n(x) = 1 + x + \frac{x^2}{2!}+...+ \frac{x^n}{n!}$$
 
-## Question 3: $$ f(x) = ln(1+x)$$
+## Question 3
+
+### $$ f(x) = ln(1+x)$$
 
 #### Derivatives 
+
+We first evaluate the first few derivatives of f(x).
 
 $$ f'(x) = \frac{1}{x+1}$$
 $$ f''(x) = \frac{-1}{(x+1)^2}$$
@@ -73,7 +93,11 @@ $$ f^n(x) = \frac{(-1)^{n+1}(n-1)!}{(x+1)^n}$$
 
 #### Use a = 0
 
+Plugging in a = 0 into f(x), we get the following equation for the nth derivative:
+
 $$ f^n(0) = (-1)^{n+1}(n-1)!$$
 
+Using the standard formula for a taylor series expansion and the nth derivative formula for this function, we get the following series. 
 
 $$f(x) = x+ \frac{x^2}{2} +...+ \frac{(-1)^{n+1}}{n}x^n$$
+

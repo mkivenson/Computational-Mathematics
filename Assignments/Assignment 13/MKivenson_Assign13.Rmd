@@ -7,9 +7,6 @@ output:
     
     theme: cosmo 
     highlight: zenburn
-    toc: true
-    toc_float: true
-    toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-**Calculus Assignment 13**
+# Calculus Assignment 13  {.tabset}
 
 ## Question 1
 Use integration by substition to solve the integral below.
