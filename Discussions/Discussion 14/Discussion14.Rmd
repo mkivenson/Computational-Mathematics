@@ -1,0 +1,28 @@
+---
+title: "Computational Mathematics - Discussion 14"
+author: "Mary Anna Kivenson"
+date: "November 23, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Calculus
+
+## Question 4 {.tabset}
+Key Idea 8.8.1 gives the nth term of the Taylor series of common functions. Verify the formula given in the Key Idea by finding the first few terms of the Taylor series of the given functions and indentifying a pattern.
+
+f(x) = sin(x), c=0
