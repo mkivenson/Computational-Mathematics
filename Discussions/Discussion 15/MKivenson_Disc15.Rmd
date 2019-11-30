@@ -1,0 +1,86 @@
+---
+title: "Computational Mathematics - Discussion 15"
+author: "Mary Anna Kivenson"
+date: "November 23, 2019"
+output:
+  rmarkdown::html_document:
+    
+    theme: cosmo 
+    highlight: zenburn
+---
+
+```{r setup, include=FALSE}
+library(ggfortify)
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Calculus Discussion 15 {.tabset}
+
+##  Question 7
+
+$$ f(x,y) = x^2 + y^2 + 2 $$
+
+* Domain: All real numbers
+* Range: [2, inf)
+
+
+##  Question 8 
+
+$$ f(x,y) = x + 2y $$
+
+* Domain: All real numbers
+* Range: All real numbers
+
+
+##  Question 9
+
+$$ f(x,y) = x - 2y $$
+
+* Domain: All real numbers
+* Range: All real numbers
+
+
+##  Question 10 
+
+$$ f(x,y) = \frac{1}{x+2y} $$
+
+* Domain of x: x is in (-inf, -x/2) or (-x/2, inf) 
+* Domain of y: y is in (-inf, -x/2) or (-x/2, inf)
+* Range: All real numbers
+
+
+##  Question 11 
+
+$$ f(x,y) = \frac{1}{x^2+y^2+1} $$
+
+* Domain: All real numbers
+* Range: [1, inf)
+
+
+##  Question 12
+
+$$ f(x,y) = sinx cosy $$
+
+* Domain: All real numbers
+* Range: [-1, 1]
+
+
+##  Question 13
+
+$$ f(x,y) = \sqrt{9 - x^2 - y^2} $$
+
+* Domain of x: x is in [-3 + |y|,3 - |y|]
+* Domain of y: y is in [-3 + |x|,3 - |x|]
+* Range: [0, 3]
+
+
+##  Question 14
+
+$$ f(x,y) = \frac{1}{\sqrt{x^2 + y^2 - 9}} $$
+
+* Domain of x: x is in (-inf,-3 + |y|) or (3 - |y|, inf)
+* Domain of y: y is in (-inf,-3 + |x|) or (3 - |x|, inf)
+* Range: (0, inf)
