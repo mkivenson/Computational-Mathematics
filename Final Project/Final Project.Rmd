@@ -1,0 +1,374 @@
+---
+title: "Computational Mathematics Final"
+author: "Mary Anna Kivenson"
+date: "December 8, 2019"
+output:
+  rmarkdown::html_document:
+    theme: cosmo 
+    highlight: zenburn
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1 {.tabset}
+
+### Random Variables 
+
+Using R, generate a random variable X that has 10,000 random uniform numbers from 1 to N, where N can be any number of your choosing greater than or equal to 6.  
+
+```{r}
+##generate a random variable X that has 10,000 random uniform numbers from 1 to N, where N can be any number of your choosing greater than or equal to 6
+rand_var = function(n) runif(10000,1, n)
+
+##set n equal to 7
+n = 6
+
+X <- rand_var(n)
+summary(X)
+hist(X)
+```
+
+
+Then generate a random variable Y that has 10,000 random normal numbers with a mean of:
+$$\mu = \sigma = \frac{(N+1)}{2}$$
+
+
+```{r}
+#generate a random variable Y that has 10,000 random normal numbers with a mean and sd of mu
+mu = (n + 1)/2
+Y <- rnorm(10000,mean=mu, sd = mu)
+summary(Y)
+```
+
+
+### Probability
+
+5 points.
+Calculate as a minimum the below probabilities a through c.  Assume the small letter "x" is estimated as the median of the X variable, and the small letter "y" is estimated as the 1st quartile of the Y variable.  Interpret the meaning of all probabilities.
+
+####  P(X>x | X>y)
+
+This is the probability that X is greater than the median of X given that X is greater than the first quartile of Y. 
+
+Since the random variables are independent, the conditional probability will be:
+
+$$P(X>x | X>y) = \frac{P(X>x, X>y)}{P(X>y)} = \frac{P(X>x)  \times P(X>y)}{P(X>y)} = P(X>x)$$
+
+P(X>x) = 0.5
+P(X>x | X>y) = 0.5
+
+** Experimental **
+
+```{r}
+x <- quantile(X)[[3]]
+y <- quantile(Y)[[2]]
+
+
+mean(X>x)*mean(X>y)/mean(X>y)
+```
+
+
+
+####  P(X>x, Y>y)	
+
+This is the probability that X is greater than its median and Y is greater than its first quartile Since the median of the variable is its midpoint, P(X>x) = 0.5. Similarly, since y is the first quartile, P(Y>y) = 0.75.
+
+$$P(X>x, Y>y)	= P(X>x)  \times P(Y>y) = 0.5 \times 0.75 = 0.375$$
+
+** Experimental **
+
+```{r}
+mean(X>x)*mean(Y>y)
+```
+
+####  (X<x | X>y)				
+
+This is the probability that X is less than its median given that it is greater than the first quartile of y.
+
+$$P(X<x | X>y) = \frac{P(X<x, X>y)}{P(X>y)} = \frac{P(X<x)  \times P(X>y)}{P(X>y)} = P(X<x) = 0.5$$
+
+This example probability is the inverse of example a, so it will be equal to 1 - P(X>x|X>y) = 0.5
+
+** Experimental **
+
+```{r}
+mean(X<x)*mean(X>y)/mean(X>y)
+```
+
+
+### Marginal / Joint
+
+5 points.  
+Investigate whether P(X>x and Y>y)=P(X>x)P(Y>y) by building a table and evaluating the marginal and joint probabilities.
+
+Marginal Probabilities: The probability of a single event.
+
+* P(X>x)
+* P(X<x)
+* P(Y>y)
+* P(Y<y)
+
+```{r}
+marginal <- cbind(cbind(mean(X>x), mean(X<x)),cbind(mean(Y>y), mean(Y<y)))
+colnames(marginal) <- c('P(X>x)','P(X<x)','P(Y>y)','P(Y<y)')
+#rownames(marginal) <- c('P(Y>y)','P(Y<y)')
+marginal
+```
+
+Joint probabilities: The probability of two events occuring simultaneously.
+
+* P(X>x and Y>y)
+* P(X<x and Y>y)
+* P(X>x and Y<y)
+* P(X<x and Y<y)
+
+```{r}
+joint <- rbind(cbind(mean(X>x)*mean(Y>y), mean(X<x)*mean(Y>y)),cbind(mean(Y<y)*mean(X>x), mean(Y<y)*mean(X<x)))
+colnames(joint) <- c('P(X>x)','P(X<x)')
+rownames(joint) <- c('P(Y>y)','P(Y<y)')
+joint
+```
+
+
+
+### Independence
+
+5 points.  
+Check to see if independence holds by using Fisher’s Exact Test and the Chi Square Test. What is the difference between the two? Which is most appropriate?
+
+*Fisher's Exact Test*
+
+Tests independence of rows and columns in a contingency table with fixed marginal probabilities. According to the test, since the p-value = 1, we fail to reject the null hypothesis that rows and columns are independent. 
+```{r}
+# fisher test - multiplied by 10000 (amount of trials) to remove error 'x' has been rounded to integer: Mean relative difference: 1
+fisher.test(joint*10000, alternative = "two.sided", conf.int = FALSE, conf.level = 0.95)
+```
+
+*Chi Square Test*
+
+Tests independence of rows and columns - whether the probability distributions of X and Y are not affected by each other. According to the test, since the p-value = 1, we fail to reject the null hypothesis that rows and columns are independent. 
+
+```{r}
+library(MASS)
+# chisq test - multiplied by 10000 (amount of trials) to remove error
+chisq.test(joint*10000) 
+```
+
+*Conclusion*
+
+The difference between the Chi-squared test and Fisher's exact test is that the latter is more accurate while the former is an approximation. However, in this situation, since we have 10,000 random variables, the Chi-square test is more appropriate; the Chi-square test is better for large sample sizes.
+
+
+## Problem 2 {.tabset}
+
+You are to register for Kaggle.com (free) and compete in the House Prices: Advanced Regression Techniques competition.  https://www.kaggle.com/c/house-prices-advanced-regression-techniques
+
+
+```{r}
+#get datasets
+test <- read.csv(file = "https://raw.githubusercontent.com/mkivenson/Computational-Mathematics/master/Final%20Project/test.csv")
+train <- read.csv(file = "https://raw.githubusercontent.com/mkivenson/Computational-Mathematics/master/Final%20Project/train.csv")
+```
+
+
+### Descriptive and Inferential Statistics
+
+#### Univariate Descriptive Statistics
+
+Provide univariate descriptive statistics and appropriate plots for the training data set.
+
+```{r}
+summary(train$SalePrice)
+```
+
+#### Scatterplot Matrix
+
+Provide a scatterplot matrix for at least two of the independent variables and the dependent variable.
+
+```{r}
+library(ggplot2)
+colnames(train)
+```
+
+```{r}
+library(ggplot2)
+library(GGally)
+ggpairs(train, columns=c(21,44,20,81), aes()) + 
+  ggtitle("Scatterplot Matrix for Sale Price")
+```
+
+
+#### Correlation Matrix
+
+Derive a correlation matrix for any three quantitative variables in the dataset.
+
+This correlation matrix will show OverallQual, OverallCond, LotArea, and SalePrice.
+
+```{r}
+library(ggcorrplot)
+corr <- round(cor(train[, c(5,18,19,81)]), 1)
+ggcorrplot(corr)
+```
+
+
+#### Hypothesis
+
+Test the hypotheses that the correlations between each pairwise set of variables is 0 and provide an 80% confidence interval.  Discuss the meaning of your analysis.  Would you be worried about familywise error? Why or why not?
+
+```{r}
+#LotArea and OverallQual
+c1 <- cor.test(x = corr[1,], y = corr[2,], method = "pearson", conf.level = 0.8)
+print(paste("P-value:", c1$p.value, " | ", "Conf Int:", c1$conf.int[1], "-", c1$conf.int[2]))
+
+#LotArea and OverallCond
+c2 <- cor.test(x = corr[1,], y = corr[3,], method = "pearson", conf.level = 0.8)
+print(paste("P-value:", c2$p.value, " | ", "Conf Int:", c2$conf.int[1], "-", c2$conf.int[2]))
+
+#LotArea and SalePrice
+c3 <- cor.test(x = corr[1,], y = corr[4,], method = "pearson", conf.level = 0.8)
+print(paste("P-value:", c3$p.value, " | ", "Conf Int:", c3$conf.int[1], "-", c3$conf.int[2]))
+
+#OverallQual and OverallCond
+c4 <- cor.test(x = corr[2,], y = corr[3,], method = "pearson", conf.level = 0.8)
+print(paste("P-value:", c4$p.value, " | ", "Conf Int:", c4$conf.int[1], "-", c4$conf.int[2]))
+
+#OverallQual and SalePrice
+c5 <- cor.test(x = corr[2,], y = corr[4,], method = "pearson", conf.level = 0.8)
+print(paste("P-value:", c5$p.value, " | ", "Conf Int:", c5$conf.int[1], "-", c5$conf.int[2]))
+
+#OverallCond and SalePrice
+c6 <- cor.test(x = corr[3,], y = corr[4,], method = "pearson", conf.level = 0.8)
+print(paste("P-value:", c6$p.value, " | ", "Conf Int:", c6$conf.int[1], "-", c6$conf.int[2]))
+```
+
+The correlation tests show that the correlations between OverallQual & SalePrice is significant, since the confidence interval does not include a correlation of 0. 
+
+Familywise error, or Type I error, is the probability of making a false conclusion. We should be worried about familywise error - the probability of it occuring is equal to the significance value (0.20)
+
+### Linear Algebra and Correlation
+
+#### Precision Matrix
+
+Invert your correlation matrix from above. (This is known as the precision matrix and contains variance inflation factors on the diagonal.)
+
+```{r}
+library(matlib)
+precision <- inv(corr)
+precision
+```
+
+Multiply the correlation matrix by the precision matrix, and then multiply the precision matrix by the correlation matrix.
+
+```{r}
+round(precision %*% corr,2)
+round(corr %*% precision)
+```
+
+
+#### LU Decomposition
+Conduct LU decomposition on the matrix.  
+
+```{r}
+lu <- function(matrix){
+
+  n = nrow(matrix)
+  
+  lower = matrix((c(1:n)*0), nrow=n, ncol=n)
+  upper = matrix((c(1:n)*0), nrow=n, ncol=n)
+  
+  for(i in (1:n)) {
+    for(k in (i:n)) {
+      sum = 0
+      for(j in (1:i)) {
+        sum = sum + (lower[i,j] * upper[j, k])
+      }
+      upper[i, k] = matrix[i, k] - sum
+    }
+    for(k in (i:n)) {
+      if(i == k) {
+        lower[i, i] = 1
+      } else {
+        sum = 0
+        for(j in (1:i)) {
+          sum = sum + (lower[k, j] * upper[j, i])
+        }
+        lower[k, i] = (matrix[k, i] - sum) / upper[i, i]
+      }
+    }
+  }
+  
+  return(list(lower, upper))
+}
+
+
+lu(corr)
+lu(precision)
+```
+
+
+### Calculus-Based Probability & Statistics
+   
+#### Shift Distribution
+Many times, it makes sense to fit a closed form distribution to data. Select a variable in the Kaggle.com training dataset that is skewed to the right, shift it so that the minimum value is absolutely above zero if necessary. 
+
+TotalBsmtSF is skewed to the right since its mean is greater than its median. All its values are already above zero.
+
+```{r}
+# Draw with black outline, white fill
+ggplot(train, aes(x=TotalBsmtSF)) +
+    geom_histogram(bins=50, colour="black", fill="white")
+summary(train$TotalBsmtSF)
+```
+
+
+#### Exponential Probability Density
+Then load the MASS package and run fitdistr to fit an exponential probability density function. (See  https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/fitdistr.html ). Find the optimal value of lambda for this distribution, and then take 1000 samples from this exponential distribution using this value (e.g., rexp(1000, lambda)). 
+
+```{r}
+lambda <- fitdistr(train$TotalBsmtSF, "exponential")$estimate[[1]]
+lambda
+exp_samples <- rexp(1000, lambda)
+```
+
+
+#### Plot Histogram
+Plot a histogram and compare it with a histogram of your original variable. Using the exponential pdf, find the 5th and 95th percentiles using the cumulative distribution function (CDF). Also generate a 95% confidence interval from the empirical data, assuming normality. Finally, provide the empirical 5th percentile and 95th percentile of the data. Discuss.
+
+This new histogram has the same of an exponential distribution, while the original variable, though skewed, is closer to a normal distribution.
+
+```{r}
+ggplot(as.data.frame(exp_samples), aes(x=exp_samples)) +
+    geom_histogram(bins=50, colour="black", fill="white")
+summary(train$TotalBsmtSF)
+```
+
+
+
+*95% Confidence*
+```{r}
+library(EnvStats)
+mean(train$TotalBsmtSF)
+eexp(train$TotalBsmtSF, ci = TRUE, conf.level = 0.95)
+```
+
+
+*CDF vs Emperical percentials*
+
+```{r}
+#CDF
+quantile(exp_samples, c(.05, .95)) 
+
+#Emperical
+quantile(train$TotalBsmtSF, c(.05, .95)) 
+```
+
+
+
+### Modeling  
+**NOT DONE** 
+
+Build some type of multiple regression  model and submit your model to the competition board.  Provide your complete model summary and results with analysis.  Report your Kaggle.com user name and score.
