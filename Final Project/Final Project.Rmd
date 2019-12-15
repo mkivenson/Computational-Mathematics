@@ -29,7 +29,6 @@ n = 6
 
 X <- rand_var(n)
 summary(X)
-hist(X)
 ```
 
 
@@ -181,6 +180,7 @@ train <- read.csv(file = "https://raw.githubusercontent.com/mkivenson/Computatio
 
 Provide univariate descriptive statistics and appropriate plots for the training data set.
 
+The following provides descriptive statistics for each column in the training data set. Further data visualization can be found below and in the model portion of the project.
 ```{r}
 summary(train$SalePrice)
 ```
@@ -255,6 +255,8 @@ Familywise error, or Type I error, is the probability of making a false conclusi
 
 Invert your correlation matrix from above. (This is known as the precision matrix and contains variance inflation factors on the diagonal.)
 
+I used the built-in inv() function in R to invert the correlation matrix.
+
 ```{r}
 library(matlib)
 precision <- inv(corr)
@@ -262,6 +264,8 @@ precision
 ```
 
 Multiply the correlation matrix by the precision matrix, and then multiply the precision matrix by the correlation matrix.
+
+The product of these matrix operations is the identity matrix.
 
 ```{r}
 round(precision %*% corr,2)
@@ -272,6 +276,7 @@ round(corr %*% precision)
 #### LU Decomposition
 Conduct LU decomposition on the matrix.  
 
+I used the function that I created in a previous homework assignment to perform LU decomposition.
 ```{r}
 lu <- function(matrix){
 
@@ -369,6 +374,8 @@ quantile(train$TotalBsmtSF, c(.05, .95))
 
 
 ### Modeling  
-**NOT DONE** 
 
 Build some type of multiple regression  model and submit your model to the competition board.  Provide your complete model summary and results with analysis.  Report your Kaggle.com user name and score.
+
+Kaggle.com username: mkivenson
+Link to regression model:
