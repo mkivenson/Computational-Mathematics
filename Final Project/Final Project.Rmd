@@ -373,9 +373,12 @@ quantile(train$TotalBsmtSF, c(.05, .95))
 
 
 
-### Modeling  
+## Modeling  
 
 Build some type of multiple regression  model and submit your model to the competition board.  Provide your complete model summary and results with analysis.  Report your Kaggle.com user name and score.
 
-Kaggle.com username: mkivenson
-Link to regression model:
+Kaggle Account: [mkivenson](https://www.kaggle.com/mkivenson/competitions)
+
+Score: 0.13507
+
+Link to regression model: [Regression Model Notebook](https://nbviewer.jupyter.org/github/mkivenson/Computational-Mathematics/blob/master/Final%20Project/Multiple%20Regression.ipynb)
