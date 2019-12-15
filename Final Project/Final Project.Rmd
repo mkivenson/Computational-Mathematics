@@ -49,6 +49,17 @@ summary(Y)
 5 points.
 Calculate as a minimum the below probabilities a through c.  Assume the small letter "x" is estimated as the median of the X variable, and the small letter "y" is estimated as the 1st quartile of the Y variable.  Interpret the meaning of all probabilities.
 
+```{r}
+#median of X variable
+x <- quantile(X)[[3]]
+print(x)
+
+#1st quartile of Y variable
+y <- quantile(Y)[[2]]
+print(y)
+```
+
+
 ####  P(X>x | X>y)
 
 This is the probability that X is greater than the median of X given that X is greater than the first quartile of Y. 
@@ -60,13 +71,9 @@ $$P(X>x | X>y) = \frac{P(X>x, X>y)}{P(X>y)} = \frac{P(X>x)  \times P(X>y)}{P(X>y
 P(X>x) = 0.5
 P(X>x | X>y) = 0.5
 
-** Experimental **
+* Experimental *
 
 ```{r}
-x <- quantile(X)[[3]]
-y <- quantile(Y)[[2]]
-
-
 mean(X>x)*mean(X>y)/mean(X>y)
 ```
 
@@ -78,7 +85,7 @@ This is the probability that X is greater than its median and Y is greater than 
 
 $$P(X>x, Y>y)	= P(X>x)  \times P(Y>y) = 0.5 \times 0.75 = 0.375$$
 
-** Experimental **
+* Experimental *
 
 ```{r}
 mean(X>x)*mean(Y>y)
@@ -92,7 +99,7 @@ $$P(X<x | X>y) = \frac{P(X<x, X>y)}{P(X>y)} = \frac{P(X<x)  \times P(X>y)}{P(X>y
 
 This example probability is the inverse of example a, so it will be equal to 1 - P(X>x|X>y) = 0.5
 
-** Experimental **
+* Experimental *
 
 ```{r}
 mean(X<x)*mean(X>y)/mean(X>y)
